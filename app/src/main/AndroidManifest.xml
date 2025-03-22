@@ -21,6 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".games.curve_tracking.CurveTrackingGame" />
         <activity android:name=".activities.TicTacToeActivity"/>
         <activity android:name=".activities.GameOfLifeActivity"/>
         <activity android:name=".activities.CurveTrackingActivity"/>

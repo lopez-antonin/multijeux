@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/antique_white">
+
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/ic_arrow_back"
+        android:background="?android:attr/selectableItemBackground"
+        android:layout_gravity="start|top"
+        android:scaleType="fitCenter"
+        android:padding="8dp"
+        app:tint="@color/amaranth_purple"
+        android:layout_marginTop="16dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="96dp"
+            android:text="@string/curve_tracking"
+            android:textColor="@color/amaranth_purple"
+            android:textSize="48sp"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <Button
+            android:id="@+id/btnLevel1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/old_rose"
+            android:text="@string/level1"
+            android:textColor="@color/antique_white"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/btnLevel2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/old_rose"
+            android:text="@string/level2"
+            android:textColor="@color/antique_white"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/btnLevel3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/old_rose"
+            android:text="@string/level3"
+            android:textColor="@color/antique_white"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/btnLevel4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/old_rose"
+            android:text="@string/level4"
+            android:textColor="@color/antique_white"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+</FrameLayout>
