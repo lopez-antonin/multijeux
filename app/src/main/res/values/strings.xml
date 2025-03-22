@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">Multijeux</string>
+    <string name="tic_tac_toe">Morpion</string>
+    <string name="game_of_life">Jeu de la Vie</string>
+    <string name="curve_tracking">Suivi de Courbe</string>
+
+    <!-- Tic-Tac-Toe -->
+    <string name="easy">Facile</string>
+    <string name="medium">Moyen</string>
+    <string name="impossible">Impossible</string>
+
+    <!-- Jeu de la Vie -->
+    <string name="start">Commencer</string>
+
+    <!-- Suivi de Courbe -->
+    <string name="level1">Niveau 1</string>
+    <string name="level2">Niveau 2</string>
+    <string name="level3">Niveau 3</string>
+    <string name="level4">Niveau 4</string>
 </resources>
