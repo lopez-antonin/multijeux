@@ -11,31 +11,48 @@ import com.antonin.multijeux.R;
 import com.antonin.multijeux.activities.CurveTrackingActivity;
 import com.antonin.multijeux.utils.SensorHelper;
 
-public class CurveTrackingGame extends Activity {
+/**
+ * CurveTrackingGame est l'activité principale du jeu de suivi de courbe.
+ *
+ * - Initialise la vue du jeu et l'affiche dans un conteneur.
+ * - Gère la communication entre la vue et le GameManager.
+ * - Utilise SensorHelper pour capter les mouvements du joueur.
+ * - Met à jour l'affichage du score et gère le retour à l'écran principal.
+ *
+ * Cette classe orchestre le déroulement du jeu et l'interface utilisateur.
+ */
 
-    private CurveTrackingView gameView;
-    private GameManager gameManager;  // Déclaration de GameManager
-    private SensorHelper sensorHelper;
+public class CurveTrackingGame extends Activity
+{
+    // +------------------+
+    // | ATTRIBUTS PRIVÉS |
+    // +------------------+
+
+    private CurveTrackingView gameView    ;
+
+    private GameManager       gameManager ;
+
+    private SensorHelper      sensorHelper;
+
+
+
+
+    // +--------------------------+
+    // | MÉTHODES DU CYCLE DE VIE |
+    // +--------------------------+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_curve_tracking);
 
-        // Initialisation de la vue de jeu et du GameManager
-        gameView = new CurveTrackingView(this, getIntent().getIntExtra("LEVEL", 1));
-        gameManager = new GameManager(this);
-
-        // Ajout de la vue dans le conteneur
         FrameLayout gameContainer = findViewById(R.id.gameContainer);
         gameContainer.addView(gameView);
 
-        // Initialisation du helper pour les capteurs
-        sensorHelper = new SensorHelper(this, gameView::updateMovement);
-
-        // Gestion des boutons et de l'interface
         ImageButton btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(view -> {
+        btnBack.setOnClickListener(view ->
+        {
             Intent intent = new Intent(CurveTrackingGame.this, CurveTrackingActivity.class);
             startActivity(intent);
             finish();
@@ -43,42 +60,72 @@ public class CurveTrackingGame extends Activity {
 
         TextView textLevel = findViewById(R.id.textLevel);
         textLevel.setText(getString(R.string.level) + " " + getLevel());
+
+        gameView = new CurveTrackingView(this, getIntent().getIntExtra("LEVEL", 1));
+        gameManager = new GameManager(this);
+        sensorHelper = new SensorHelper(this, gameView::updateMovement);
     }
 
-    // Ajout d'un getter pour GameManager
-    public GameManager getGameManager() {
+
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        if (sensorHelper != null)
+        {
+            sensorHelper.unregister();
+        }
+    }
+
+
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        if (sensorHelper != null && !gameManager.isGameOver())
+        {
+            sensorHelper.register();
+        }
+    }
+
+
+
+
+    // +---------+
+    // | GETTERS |
+    // +---------+
+
+    public GameManager getGameManager()
+    {
         return gameManager;
     }
 
-    // Mise à jour du score dans l'UI
-    public void updateScoreText(String scoreText) {
-        TextView textScore = findViewById(R.id.textScore);
-        textScore.setText(scoreText);
-    }
-
-    // Cette méthode expose le niveau de l'activité
-    public int getLevel() {
+    public int getLevel()
+    {
         return getIntent().getIntExtra("LEVEL", 1);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (sensorHelper != null && !gameManager.isGameOver()) {
-            sensorHelper.register();  // Enregistrement des capteurs si le jeu n'est pas terminé
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (sensorHelper != null) {
-            sensorHelper.unregister(); // Désenregistrement des capteurs lorsque l'activité est en pause
-        }
-    }
-
-    public CurveTrackingView getGameView() {
+    public CurveTrackingView getGameView()
+    {
         return gameView;
+    }
+
+
+
+
+    // +--------------------+
+    // | MÉTHODES PUBLIQUES |
+    // +--------------------+
+
+    /**
+     * Met à jour l'affichage du score dans l'interface utilisateur.
+     */
+    public void updateScoreText(String scoreText)
+    {
+        TextView textScore = findViewById(R.id.textScore);
+        textScore.setText(scoreText);
     }
 }
 

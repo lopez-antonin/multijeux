@@ -6,37 +6,100 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-public class SensorHelper implements SensorEventListener {
+/**
+ * SensorHelper est une classe utilitaire qui gère l'utilisation de l'accéléromètre.
+ *
+ * - Écoute les mouvements du capteur et transmet les valeurs de déplacement.
+ * - Peut être utilisée dans différents jeux nécessitant un contrôle par mouvement.
+ *
+ * Cette classe est actuellement uniquement utilisée dans CurveTrackingGame.
+ */
 
-    private SensorManager sensorManager;
-    private Sensor accelerometer;
-    private MovementListener listener;
+public class SensorHelper implements SensorEventListener
+{
+    // +------------------+
+    // | ATTRIBUTS PRIVÉS |
+    // +------------------+
 
-    public interface MovementListener {
+    private SensorManager    sensorManager;
+
+    private Sensor           accelerometer;
+
+    private MovementListener listener     ;
+
+
+
+
+    // +-------------------+
+    // | INTERFACE INTERNE |
+    // +-------------------+
+
+    /**
+     * Interface pour écouter les mouvements détectés par l'accéléromètre.
+     * Doit être implémentée par la classe utilisant SensorHelper.
+     */
+    public interface MovementListener
+    {
         void onMovement(float dx, float dy);
     }
 
-    public SensorHelper(Context context, MovementListener listener) {
+
+
+
+    // +--------------+
+    // | CONSTRUCTEUR |
+    // +--------------+
+
+    public SensorHelper(Context context, MovementListener listener)
+    {
         this.listener = listener;
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
 
-    public void register() {
+
+
+
+    // +--------------------+
+    // | MÉTHODES PUBLIQUES |
+    // +--------------------+
+
+    /**
+     * Enregistre l'écouteur du capteur d'accéléromètre.
+     */
+    public void register()
+    {
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
     }
 
-    public void unregister() {
+
+
+    /**
+     * Désenregistre l'écouteur du capteur pour économiser la batterie.
+     */
+    public void unregister()
+    {
         sensorManager.unregisterListener(this);
     }
 
+
+
+
+    // +----------------------+
+    // | CALLBACKS DU CAPTEUR |
+    // +----------------------+
+
     @Override
-    public void onSensorChanged(SensorEvent event) {
+    public void onSensorChanged(SensorEvent event)
+    {
         float dx = -event.values[0]; // gauche-droite
-        float dy = event.values[1];  // haut-bas
+        float dy =  event.values[1]; // haut-bas
         listener.onMovement(dx, dy);
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+    public void onAccuracyChanged(Sensor sensor, int accuracy)
+    {
+
+    }
 }

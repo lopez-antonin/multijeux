@@ -2,59 +2,136 @@ package com.antonin.multijeux.games.curve_tracking;
 
 import android.os.Handler;
 
-public class GameManager {
+/**
+ * GameManager gère la logique du jeu et le système de score.
+ *
+ * - Diminue le score lorsque le joueur sort du chemin.
+ * - Vérifie si le jeu est terminé en analysant la position du joueur.
+ * - Déclenche l'effet de clignotement lorsque le joueur termine le parcours.
+ * - Empêche la mise à jour du score après la fin du jeu.
+ *
+ * Cette classe est le coeur du gameplay et de la gestion de l'état du jeu.
+ */
+
+public class GameManager
+{
+    // +------------------+
+    // | ATTRIBUTS PRIVÉS |
+    // +------------------+
+
     private CurveTrackingGame gameActivity;
-    private double score;
-    private boolean gameOver;
 
-    public GameManager(CurveTrackingGame gameActivity) {
+    private double            score       ;
+
+    private boolean           gameOver    ;
+
+
+
+
+    // +--------------+
+    // | CONSTRUCTEUR |
+    // +--------------+
+
+    public GameManager(CurveTrackingGame gameActivity)
+    {
         this.gameActivity = gameActivity;
-        this.score = 100;
-        this.gameOver = false;
+        this.score        = 100         ;
+        this.gameOver     = false       ;
     }
 
-    // Cette méthode est appelée depuis l'activité pour mettre à jour le score
-    public void updateScore(double penalty) {
-        score -= penalty;
-        score = Math.max(score, 0);
-        score = Math.round(score * 10.0) / 10.0;
-        gameActivity.updateScoreText(String.valueOf(score));  // Met à jour le score sur l'UI
+
+
+
+    // +--------------------+
+    // | MÉTHODES PUBLIQUES |
+    // +--------------------+
+
+    /**
+     * Met à jour le score du joueur en appliquant une pénalité.
+     */
+    public void updateScore(double penalty)
+    {
+        score -= penalty                        ;
+        score  = Math.max  (score,  0   )       ;
+        score  = Math.round(score * 10.0) / 10.0;
+
+        gameActivity.updateScoreText(String.valueOf(score));
     }
 
-    // Cette méthode vérifie si le jeu est terminé
-    public boolean isGameCompleted(CurveTrackingView gameView) {
-        int centerX = gameView.getWidth() / 2;
+
+
+    /**
+     * Vérifie si le joueur a complété le niveau.
+     */
+    public boolean isGameCompleted(CurveTrackingView gameView)
+    {
+        int centerX = gameView.getWidth () / 2;
         int centerY = gameView.getHeight() / 2;
 
-        float distance = (float) Math.sqrt(Math.pow(gameView.getPlayerX() - centerX, 2) + Math.pow(gameView.getPlayerY() - centerY, 2));
-        if (distance < 20) {
+        float deltaX = gameView.getPlayerX() - centerX;
+        float deltaY = gameView.getPlayerY() - centerY;
+
+        float distance = (float) Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
+
+        if (distance < 20)
+        {
             endGame();
             return true;
         }
+
         return false;
     }
 
-    private void endGame() {
+
+
+    /**
+     * Indique si la partie est terminée.
+     */
+    public boolean isGameOver()
+    {
+        return gameOver;
+    }
+
+
+
+
+    // +------------------+
+    // | MÉTHODES PRIVÉES |
+    // +------------------+
+
+    /**
+     * Met fin à la partie en arrêtant les mouvements du joueur et
+     * en lançant l'effet de clignotement
+     */
+    private void endGame()
+    {
         gameOver = true;
-        gameActivity.getGameView().stopDrawing();  // Stoppe le dessin
+        gameActivity.getGameView().stopDrawing();
         startBlinkingEffect();
     }
 
-    private void startBlinkingEffect() {
+
+
+    /**
+     * Fait clignoter le tracé du joueur toutes les 500ms après la fin du jeu.
+     */
+    private void startBlinkingEffect()
+    {
         Handler handler = new Handler();
-        Runnable blinkRunnable = new Runnable() {
+
+        Runnable blinkRunnable = new Runnable()
+        {
             @Override
-            public void run() {
-                if (gameOver) {
+            public void run()
+            {
+                if (gameOver)
+                {
                     gameActivity.getGameView().togglePlayerPathVisibility();
-                    handler.postDelayed(this, 500);  // Clignote toutes les 500ms
+                    handler.postDelayed(this, 500);  // 500ms
                 }
             }
         };
-        handler.post(blinkRunnable);
-    }
 
-    public boolean isGameOver() {
-        return gameOver;
+        handler.post(blinkRunnable);
     }
 }
