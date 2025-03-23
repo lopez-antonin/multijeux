@@ -32,12 +32,11 @@ public class SensorHelper implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        float dx = -event.values[0]; // Déplacement gauche-droite
-        float dy = event.values[1];  // Déplacement haut-bas
+        float dx = -event.values[0]; // gauche-droite
+        float dy = event.values[1];  // haut-bas
         listener.onMovement(dx, dy);
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-    }
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.antonin.multijeux.R;
 import com.antonin.multijeux.games.curve_tracking.CurveTrackingGame;
 
@@ -37,5 +38,6 @@ public class CurveTrackingActivity extends AppCompatActivity {
         Intent intent = new Intent(CurveTrackingActivity.this, CurveTrackingGame.class);
         intent.putExtra("LEVEL", level);
         startActivity(intent);
+        finish();
     }
 }
