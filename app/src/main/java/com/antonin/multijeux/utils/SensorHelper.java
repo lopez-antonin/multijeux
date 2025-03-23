@@ -14,7 +14,6 @@ import android.hardware.SensorManager;
  *
  * Cette classe est actuellement uniquement utilisée dans CurveTrackingGame.
  */
-
 public class SensorHelper implements SensorEventListener
 {
     // +------------------+

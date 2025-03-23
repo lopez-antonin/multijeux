@@ -21,7 +21,6 @@ import com.antonin.multijeux.utils.SensorHelper;
  *
  * Cette classe orchestre le déroulement du jeu et l'interface utilisateur.
  */
-
 public class CurveTrackingGame extends Activity
 {
     // +------------------+
@@ -120,7 +119,17 @@ public class CurveTrackingGame extends Activity
     // +--------------------+
 
     /**
-     * Met à jour l'affichage du score dans l'interface utilisateur.
+     * Met à jour le texte affiché dans le TextView du score.
+     *
+     * Cette méthode prend une chaîne de caractères représentant le score et la définit comme
+     * contenu textuel du TextView avec l'ID 'textScore' défini dans le fichier de mise en page
+     * (R.id.textScore).
+     *
+     * @param scoreText Le nouveau texte du score à afficher. Il doit s'agir d'une chaîne de
+     *                  caractères représentant le score actuel, par exemple, "Score : 10", "0"
+     *                  ou "Meilleur score : 100".
+     * @throws NullPointerException Si le TextView avec l'ID 'textScore' est introuvable dans
+     *                              la mise en page actuelle.
      */
     public void updateScoreText(String scoreText)
     {
