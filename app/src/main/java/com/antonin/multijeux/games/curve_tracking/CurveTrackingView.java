@@ -31,6 +31,9 @@ public class CurveTrackingView extends SurfaceView implements SurfaceHolder.Call
     private float         playerY                 ;
     private float         pathStrokeWidth         ;
     private float         playerStrokeWidth       ;
+    private float         startPlayerX            ;
+    private float         startPlayerY            ;
+    private float         distanceTraveled        ;
 
     private boolean       canDraw           = true;
     private boolean       playerPathVisible = true;
@@ -115,8 +118,10 @@ public class CurveTrackingView extends SurfaceView implements SurfaceHolder.Call
         path.reset();
         path.addCircle(centerX, centerY, radius, Path.Direction.CW);
 
-        playerX = centerX;
-        playerY = centerY - radius;
+        this.startPlayerX = centerX         ;
+        this.startPlayerY = centerY - radius;
+        playerX = startPlayerX;
+        playerY = startPlayerY;
 
         playerPath.moveTo(playerX, playerY);
 
@@ -201,13 +206,20 @@ public class CurveTrackingView extends SurfaceView implements SurfaceHolder.Call
 
     public float getPlayerX()
     {
-        return playerX;
+        return this.playerX;
     }
 
     public float getPlayerY()
     {
-        return playerY;
+        return this.playerY;
     }
+
+    public float getStartPlayerX() {return this.startPlayerX;}
+
+    public float getStartPlayerY() {return this.startPlayerY;}
+
+    public double getDistanceTraveled() {return this.distanceTraveled;}
+
 
 
 
@@ -341,5 +353,7 @@ public class CurveTrackingView extends SurfaceView implements SurfaceHolder.Call
         }
 
         playerPath.lineTo(playerX, playerY);
+
+        distanceTraveled += Math.sqrt(dx * dx + dy * dy);
     }
 }

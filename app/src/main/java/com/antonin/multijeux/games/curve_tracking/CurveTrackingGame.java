@@ -40,11 +40,16 @@ public class CurveTrackingGame extends Activity
     // | MÉTHODES DU CYCLE DE VIE |
     // +--------------------------+
 
+    /**
+     * L'activité principale pour le jeu de suivi de courbe.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_curve_tracking);
+
+        gameView = new CurveTrackingView(this, getIntent().getIntExtra("LEVEL", 1));
 
         FrameLayout gameContainer = findViewById(R.id.gameContainer);
         gameContainer.addView(gameView);
@@ -60,7 +65,6 @@ public class CurveTrackingGame extends Activity
         TextView textLevel = findViewById(R.id.textLevel);
         textLevel.setText(getString(R.string.level) + " " + getLevel());
 
-        gameView = new CurveTrackingView(this, getIntent().getIntExtra("LEVEL", 1));
         gameManager = new GameManager(this);
         sensorHelper = new SensorHelper(this, gameView::updateMovement);
     }

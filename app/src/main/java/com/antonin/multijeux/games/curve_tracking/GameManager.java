@@ -67,22 +67,27 @@ public class GameManager
 
     /**
      * Vérifie si le jeu est terminé en fonction de la proximité du joueur par rapport au centre de la vue du jeu.
-     *
-     * Le jeu est considéré comme terminé si la position actuelle du joueur (playerX, playerY) se trouve à une
-     * certaine distance (20 unités) du centre de la vue du jeu. Si le joueur se trouve dans ce rayon,
-     * le jeu est terminé et cette méthode renvoie true. Sinon, elle renvoie false.
-     *
+     * Le jeu est considéré comme terminé si le joueur a parcouru une distance au moins égale à la circonférence
+     * du cercle tracé et si sa position actuelle est proche de son point de départ.
      * @param gameView La CurveTrackingView représentant la zone de jeu. Cette vue fournit les dimensions
      *                 et la position actuelle du joueur.
-     * @return True si le jeu est terminé (le joueur est proche du centre), false sinon.
+     * @return True si le jeu est terminé (le joueur a fait le tour du cercle et est proche de son point de départ),
+     * false sinon.
      */
     public boolean isGameCompleted(CurveTrackingView gameView)
     {
-        int centerX = gameView.getWidth () / 2;
-        int centerY = gameView.getHeight() / 2;
+        if (gameOver) return true;
 
-        float deltaX = gameView.getPlayerX() - centerX;
-        float deltaY = gameView.getPlayerY() - centerY;
+        int radius = Math.min(gameView.getWidth(), gameView.getHeight()) / 2;
+        double circumference = 2 * Math.PI * radius;
+
+        if (gameView.getDistanceTraveled() < circumference)
+        {
+            return false;
+        }
+
+        float deltaX = gameView.getPlayerX() - gameView.getStartPlayerX();
+        float deltaY = gameView.getPlayerY() - gameView.getStartPlayerY();
 
         float distance = (float) Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
 
@@ -92,7 +97,7 @@ public class GameManager
             return true;
         }
 
-        return false;
+         return false;
     }
 
 
