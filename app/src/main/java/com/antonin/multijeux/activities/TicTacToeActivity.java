@@ -17,20 +17,31 @@ public class TicTacToeActivity extends AppCompatActivity
         setContentView(R.layout.activity_tic_tac_toe);
 
 
+        Button btnPVP = findViewById(R.id.btnPVP);
         Button btnEasy = findViewById(R.id.btnEasy);
+        Button btnMedium = findViewById(R.id.btnMedium);
+        Button btnImpossible = findViewById(R.id.btnImpossible);
 
         ImageButton btnBack = findViewById(R.id.btnBack);
 
-        btnEasy.setOnClickListener(view -> {
-            Intent intent = new Intent(TicTacToeActivity.this, TicTacToeGame.class);
-            startActivity(intent);
-            finish();
-        });
+        btnPVP.setOnClickListener(view -> {startGame(0);});
+        btnEasy.setOnClickListener(view -> {startGame(1);});
+        btnMedium.setOnClickListener(view -> {startGame(2);});
+        btnImpossible.setOnClickListener(view -> {startGame(3);});
 
         btnBack.setOnClickListener(view -> {
             Intent intent = new Intent(TicTacToeActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         });
+    }
+
+
+    private void startGame(int lvl)
+    {
+        Intent intent = new Intent(TicTacToeActivity.this, TicTacToeGame.class);
+        intent.putExtra("LEVEL", lvl);
+        startActivity(intent);
+        finish();
     }
 }

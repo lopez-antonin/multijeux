@@ -14,13 +14,16 @@ public class TicTacToeLogic
     private boolean gameBlocked;
     private Context ctx;
 
-    public TicTacToeLogic(int size, Context ctx)
+    private TicTacToeGame gameCtrl;
+    private int level;
+
+    public TicTacToeLogic(int size, Context ctx, TicTacToeGame gameCtrl)
     {
         this.map = new char[size][size];
         this.tour = 0;
         this.estGagner = false;
-
         this.ctx = ctx;
+        this.gameCtrl = gameCtrl;
     }
 
     public boolean setMap(int x, int y)
@@ -50,7 +53,7 @@ public class TicTacToeLogic
             {
                 this.estGagner = true;
             }else{
-                this.tour++;
+                this.newTurn();
             }
             return true;
         }
@@ -139,6 +142,27 @@ public class TicTacToeLogic
         return '\u0000';
     }
 
+    private void newTurn()
+    {
+        this.tour++;
+
+        if(this.level == 0)
+        {
+            return;
+        }
+
+        if(this.level == 1 && this.tour%2 == 1)
+        {
+            while(!this.setMap((int) (Math.random() * (this.map.length-1)), (int) (Math.round(Math.random() * (this.map.length-1))))){} //Choix aléatoire du bot si facile
+            this.gameCtrl.updateFrame();
+        }
+
+        if(this.level == 2)
+        {
+
+        }
+    }
+
 
     public char[][] getMap()
     {
@@ -153,6 +177,11 @@ public class TicTacToeLogic
     public boolean isGameBlocked()
     {
         return this.gameBlocked;
+    }
+
+    public void setLevel(int level)
+    {
+        this.level = level;
     }
 
     public char getJoueur()

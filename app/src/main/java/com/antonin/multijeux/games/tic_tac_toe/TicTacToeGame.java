@@ -23,7 +23,7 @@ public class TicTacToeGame extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_tic_tac_toe);
 
-        this.ticTacToeLogic = new TicTacToeLogic(3, this);
+        this.ticTacToeLogic = new TicTacToeLogic(3, this, this);
 
         this.ticTacToeView = new TicTacToeView(this, 3, this, findViewById(R.id.textGagner));
 
@@ -31,6 +31,17 @@ public class TicTacToeGame extends Activity
 
         FrameLayout frameLayout = findViewById(R.id.gameContainerTicTacToe);
         frameLayout.addView(this.ticTacToeView);
+
+        TextView txtLevel = findViewById(R.id.textLevel);
+
+        switch(getIntent().getIntExtra("LEVEL", 0))
+        {
+            case 0 : txtLevel.setText("Level : JcJ");       this.ticTacToeLogic.setLevel(0); break;
+            case 1 : txtLevel.setText("Level : Facile");    this.ticTacToeLogic.setLevel(1); break;
+            case 2 : txtLevel.setText("Level : Moyen");     this.ticTacToeLogic.setLevel(2); break;
+            case 3 : txtLevel.setText("Level : Impossible");this.ticTacToeLogic.setLevel(3); break;
+        }
+
 
         ticTacToeView.setOnCellClickListener((row, col) -> {
             ticTacToeView.updateGrid(row, col);
@@ -41,7 +52,6 @@ public class TicTacToeGame extends Activity
             startActivity(intent);
             finish();
         });
-
     }
 
     public char[][] getMap()
@@ -67,5 +77,10 @@ public class TicTacToeGame extends Activity
     public boolean isGameBlocked()
     {
         return this.ticTacToeLogic.isGameBlocked();
+    }
+
+    public void updateFrame()
+    {
+        this.ticTacToeView.updateFrame();
     }
 }

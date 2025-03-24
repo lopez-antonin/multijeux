@@ -159,4 +159,9 @@ public class TicTacToeView extends View
         this.game.setMap(row,col);
         invalidate();
     }
+
+    public void updateFrame()
+    {
+        invalidate();
+    }
 }
