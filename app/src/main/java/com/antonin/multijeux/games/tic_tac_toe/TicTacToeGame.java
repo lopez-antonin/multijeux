@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.antonin.multijeux.R;
 import com.antonin.multijeux.activities.MainActivity;
@@ -23,9 +25,9 @@ public class TicTacToeGame extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_tic_tac_toe);
 
-        this.ticTacToeLogic = new TicTacToeLogic(3, this, this);
+        this.ticTacToeLogic = new TicTacToeLogic(getIntent().getIntExtra("TAILLE", 3), this, this);
 
-        this.ticTacToeView = new TicTacToeView(this, 3, this, findViewById(R.id.textGagner));
+        this.ticTacToeView = new TicTacToeView(this, getIntent().getIntExtra("TAILLE", 3), this, findViewById(R.id.textGagner));
 
         ImageButton btnBack = findViewById(R.id.btnBack);
 
@@ -33,6 +35,7 @@ public class TicTacToeGame extends Activity
         frameLayout.addView(this.ticTacToeView);
 
         TextView txtLevel = findViewById(R.id.textLevel);
+
 
         switch(getIntent().getIntExtra("LEVEL", 0))
         {
@@ -43,8 +46,14 @@ public class TicTacToeGame extends Activity
         }
 
 
-        ticTacToeView.setOnCellClickListener((row, col) -> {
-            ticTacToeView.updateGrid(row, col);
+        //Events
+        ticTacToeView.setOnCellClickListener((row, col) ->
+        {
+            if(!this.ticTacToeLogic.isAIPlaying())
+                ticTacToeView.updateGrid(row, col);
+            else{
+                Toast.makeText(this, "L'IA est en train de réfléchir, patientez... ", Toast.LENGTH_LONG);
+            }
         });
 
         btnBack.setOnClickListener(view -> {
