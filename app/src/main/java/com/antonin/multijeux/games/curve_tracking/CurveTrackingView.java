@@ -265,8 +265,9 @@ public class CurveTrackingView extends SurfaceView implements SurfaceHolder.Call
      *         Un point est considéré comme étant à l'extérieur s'il est soit trop éloigné du centre (au-delà du rayon extérieur),
      *         soit trop proche du centre (à l'intérieur du rayon intérieur).
      */
-    private boolean isOutsidePath(float x, float y) {
-        int centerX = getWidth() / 2;
+    private boolean isOutsidePath(float x, float y)
+    {
+        int centerX = getWidth () / 2;
         int centerY = getHeight() / 2;
         int radius = Math.min(getWidth(), getHeight()) / 3;
 
@@ -309,6 +310,13 @@ public class CurveTrackingView extends SurfaceView implements SurfaceHolder.Call
     public void togglePlayerPathVisibility()
     {
         playerPathVisible = !playerPathVisible;
+
+        Canvas canvas = holder.lockCanvas();
+        if (canvas != null)
+        {
+            drawGame(canvas);
+            holder.unlockCanvasAndPost(canvas);
+        }
     }
 
 

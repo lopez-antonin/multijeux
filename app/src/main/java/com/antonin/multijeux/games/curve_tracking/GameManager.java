@@ -1,6 +1,7 @@
 package com.antonin.multijeux.games.curve_tracking;
 
-import android.os.Handler;
+import android.os.SystemClock;
+
 
 /**
  * La classe GameManager est responsable de la gestion de l'état du jeu, y compris le score du joueur,
@@ -140,34 +141,25 @@ public class GameManager
 
     /**
      * Démarre un effet de clignotement pour le chemin du joueur lorsque la partie est terminée.
-     *
-     * Cette méthode utilise un Handler et un Runnable pour créer un effet de clignotement temporisé.
-     * Lorsque la partie est terminée (gameOver est vrai), la visibilité du chemin du joueur
-     * est activée et désactivée de manière répétée avec un délai de 500ms entre chaque basculement.
-     *
-     * L'effet de clignotement continue jusqu'à ce que le drapeau `gameOver` soit défini sur faux
-     * (vraisemblablement ailleurs dans le code).
-     *
-     * @see Handler
-     * @see Runnable
+     * Cette méthode fait clignoter le tracé pendant 3 secondes.
      */
     private void startBlinkingEffect()
     {
-        Handler handler = new Handler();
-
-        Runnable blinkRunnable = new Runnable()
+        new Thread(() ->
         {
-            @Override
-            public void run()
+            long startTime = SystemClock.uptimeMillis();
+            long duration = 3000;
+            long blinkInterval = 500;
+            while (SystemClock.uptimeMillis() - startTime < duration)
             {
-                if (gameOver)
+                gameActivity.runOnUiThread(() -> gameActivity.getGameView().togglePlayerPathVisibility());
+                try
                 {
-                    gameActivity.getGameView().togglePlayerPathVisibility();
-                    handler.postDelayed(this, 500);  // 500ms
+                    Thread.sleep(blinkInterval);
                 }
+                catch (InterruptedException ignored) {}
             }
-        };
+        }).start();
 
-        handler.post(blinkRunnable);
     }
 }
