@@ -29,11 +29,6 @@ public class TicTacToeView extends View
         super(context);
         paint = new Paint();
 
-        if(nbCell > 4)
-        {
-            nbCell = 4;
-        }
-
         if(nbCell < 0)
         {
             nbCell = 3;
@@ -108,8 +103,10 @@ public class TicTacToeView extends View
         float startX = this.offsetX + col * cellSize;
         float startY = this.offsetY + row * cellSize;
 
-        canvas.drawLine(startX + 50, startY + 50, startX + cellSize - 50, startY + cellSize - 50, paint);
-        canvas.drawLine(startX + 50, startY + cellSize - 50, startX + cellSize - 50, startY + 50, paint);
+        float spacing = (float) (cellSize * 0.1);
+
+        canvas.drawLine(startX + spacing, startY + spacing, startX + cellSize - spacing, startY + cellSize - spacing, paint);
+        canvas.drawLine(startX + spacing, startY + cellSize - spacing, startX + cellSize - spacing, startY + spacing, paint);
     }
 
     // Dessiner un O centré dans sa case
@@ -117,7 +114,7 @@ public class TicTacToeView extends View
         paint.setColor(Color.BLUE);
         float centerX = this.offsetX + col * cellSize + cellSize / 2;
         float centerY = this.offsetY + row * cellSize + cellSize / 2;
-        canvas.drawCircle(centerX, centerY, cellSize / 3, paint);
+        canvas.drawCircle(centerX, centerY, (float) (cellSize / 2.5), paint);
     }
 
     @Override
@@ -126,17 +123,17 @@ public class TicTacToeView extends View
         if (event.getAction() == MotionEvent.ACTION_DOWN)
         {
             // Calculer la position relative à la grille
-            int col = (int) ((event.getX() - this.offsetX) / cellSize);
-            int row = (int) ((event.getY() - this.offsetY) / cellSize);
+            int col = (int) ((event.getX() - this.offsetX) / this.cellSize);
+            int row = (int) ((event.getY() - this.offsetY) / this.cellSize);
 
             // Vérifier que le clic est bien dans la grille
             if (col >= 0 && col < this.nbCell && row >= 0 && row < this.nbCell)
             {
-                if (game.getMap()[row][col] == '\u0000')
+                if (this.game.getMap()[row][col] == '\u0000')
                 { // Vérifier si la case est vide
-                    if (listener != null)
+                    if (this.listener != null)
                     {
-                        listener.onCellClick(row, col);
+                        this.listener.onCellClick(row, col);
                     }
                 }
             }
