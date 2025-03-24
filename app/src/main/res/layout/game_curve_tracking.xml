@@ -23,32 +23,31 @@
         android:layout_marginTop="16dp" />
 
     <TextView
-        android:id="@+id/textBestScore"
+        android:id="@+id/textLevel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|top"
+        android:layout_marginTop="24dp"
+        android:layout_gravity="center_horizontal"
         android:text=""
         android:textColor="@color/amaranth_purple"
         android:textSize="32sp"
         android:textStyle="bold"
         android:gravity="center"
         android:elevation="10dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginRight="16dp"/>
+        android:layout_marginBottom="16dp"/>
 
     <TextView
-        android:id="@+id/textLevel"
+        android:id="@+id/textBestScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_gravity="center_horizontal"
-        android:text="2"
+        android:text=""
         android:textColor="@color/amaranth_purple"
         android:textSize="32sp"
         android:textStyle="bold"
         android:gravity="center"
         android:elevation="10dp"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginTop="80dp" />
     
     <LinearLayout
         android:layout_width="match_parent"
