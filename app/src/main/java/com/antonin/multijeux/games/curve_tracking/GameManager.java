@@ -1,7 +1,7 @@
 package com.antonin.multijeux.games.curve_tracking;
 
+import android.content.SharedPreferences;
 import android.os.SystemClock;
-
 
 /**
  * La classe GameManager est responsable de la gestion de l'état du jeu, y compris le score du joueur,
@@ -17,6 +17,7 @@ public class GameManager
     private CurveTrackingGame gameActivity;
 
     private double            score       ;
+    private double            bestScore   ;
 
     private boolean           gameOver    ;
 
@@ -39,6 +40,12 @@ public class GameManager
         this.gameActivity = gameActivity;
         this.score        = 100         ;
         this.gameOver     = false       ;
+
+        loadBestScore();
+
+        // Mise à jour de l'UI sur le thread principal
+        bestScore = Math.round(bestScore * 10.0) / 10.0;
+        gameActivity.runOnUiThread(() -> gameActivity.updateBestScoreText(String.valueOf(bestScore)));
     }
 
 
@@ -137,7 +144,62 @@ public class GameManager
     {
         gameOver = true;
         gameActivity.getGameView().stopDrawing();
+
         startEndGameAnimation();
+
+        if (score > bestScore)
+        {
+            bestScore = score;
+            saveBestScore();
+
+            // Mise à jour de l'UI sur le thread principal
+            bestScore = Math.round(bestScore * 10.0) / 10.0;
+            gameActivity.runOnUiThread(() -> gameActivity.updateBestScoreText(String.valueOf(bestScore)));
+
+        }
+    }
+
+
+
+    /**
+     * Enregistre le meilleur score actuel dans les préférences partagées.
+     *
+     * Cette méthode persiste la valeur de la variable 'bestScore' dans les
+     * préférences partagées de l'appareil, ce qui permet de la récupérer
+     * même après la fermeture et la réouverture de l'application. Le meilleur
+     * score est stocké sous forme de flottant (float) avec la clé "bestScore"
+     * dans un fichier de préférences partagées nommé "GamePrefs".
+     *
+     * La méthode `apply()` est utilisée pour enregistrer les modifications de
+     * manière asynchrone, améliorant ainsi les performances en évitant de
+     * bloquer le thread principal.
+     *
+     * @see SharedPreferences
+     * @see SharedPreferences.Editor
+     * @see SharedPreferences.Editor#putFloat(String, float)
+     * @see SharedPreferences.Editor#apply()
+     */
+    private void saveBestScore()
+    {
+        int level = gameActivity.getGameView().getLevel();
+
+        SharedPreferences sharedPreferences = gameActivity.getSharedPreferences("GamePrefs", gameActivity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putFloat("bestScore" + level, (float) bestScore);
+        editor.apply();
+    }
+
+
+
+    /**
+     * Charge le meilleur score à partir des préférences partagées.
+     */
+    private void loadBestScore()
+    {
+        int level = gameActivity.getGameView().getLevel();
+
+        SharedPreferences sharedPreferences = gameActivity.getSharedPreferences("GamePrefs", gameActivity.MODE_PRIVATE);
+        bestScore = sharedPreferences.getFloat("bestScore" + level, 0);
     }
 
 
@@ -165,6 +227,7 @@ public class GameManager
             long blinkInterval = 500;
             while (SystemClock.uptimeMillis() - startTime < duration)
             {
+                // Mise à jour de l'UI sur le thread principal
                 gameActivity.runOnUiThread(() -> gameActivity.getGameView().togglePlayerPathVisibility());
                 try
                 {
@@ -173,6 +236,7 @@ public class GameManager
                 catch (InterruptedException ignored) {}
             }
 
+            // Mise à jour de l'UI sur le thread principal
             gameActivity.runOnUiThread(() -> {
                 gameActivity.getBtnReplay().setVisibility(android.view.View.VISIBLE);
                 gameActivity.getBtnReplay().setEnabled(true);

@@ -220,6 +220,7 @@ public class CurveTrackingView extends SurfaceView implements SurfaceHolder.Call
 
     public double getDistanceTraveled() {return this.distanceTraveled;}
 
+    public int getLevel() {return this.level;}
 
 
 

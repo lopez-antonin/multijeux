@@ -154,5 +154,26 @@ public class CurveTrackingGame extends Activity
         TextView textScore = findViewById(R.id.textScore);
         textScore.setText(scoreText);
     }
+
+
+
+    /**
+     * Met à jour le texte affiché dans le TextView "Meilleur Score".
+     *
+     * Cette méthode prend une chaîne de caractères représentant le meilleur score
+     * et la définit comme contenu textuel du TextView avec l'ID `textBestScore`.
+     * Cela permet une mise à jour dynamique du meilleur score affiché à l'utilisateur.
+     *
+     * @param bestScoreText La chaîne de caractères à afficher comme meilleur score.
+     *                      Cette chaîne doit généralement représenter le score le
+     *                      plus élevé atteint par l'utilisateur. Par exemple "Meilleur: 100".
+     * @throws NullPointerException Si aucun TextView avec R.id.textBestScore n'a été trouvé dans la mise en page.
+     * @throws IllegalArgumentException Si bestScoreText est null.
+     */
+    public void updateBestScoreText(String bestScoreText)
+    {
+        TextView textBestScore = findViewById(R.id.textBestScore);
+        textBestScore.setText(bestScoreText);
+    }
 }
 
