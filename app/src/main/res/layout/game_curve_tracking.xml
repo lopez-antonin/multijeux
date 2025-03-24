@@ -22,6 +22,17 @@
         app:tint="@color/amaranth_purple"
         android:layout_marginTop="16dp" />
 
+    <ImageButton
+        android:id="@+id/btnReplay"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/ic_replay"
+        android:background="?android:attr/selectableItemBackground"
+        android:layout_gravity="end|top"
+        android:scaleType="fitCenter"
+        app:tint="@color/amaranth_purple"
+        android:layout_marginTop="16dp" />
+
     <TextView
         android:id="@+id/textLevel"
         android:layout_width="wrap_content"
@@ -66,26 +77,6 @@
             android:textStyle="bold"
             android:gravity="center"
             android:elevation="10dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="bottom">
-
-        <ImageButton
-            android:id="@+id/btnReplay"
-            android:layout_width="128dp"
-            android:layout_height="128dp"
-            android:src="@drawable/ic_replay"
-            android:background="?android:attr/selectableItemBackground"
-            android:scaleType="fitCenter"
-            app:tint="@color/amaranth_purple"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="16dp"
-            android:enabled="false"
-            android:visibility="gone" />
     </LinearLayout>
 
 </FrameLayout>

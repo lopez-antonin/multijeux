@@ -235,12 +235,6 @@ public class GameManager
                 }
                 catch (InterruptedException ignored) {}
             }
-
-            // Mise à jour de l'UI sur le thread principal
-            gameActivity.runOnUiThread(() -> {
-                gameActivity.getBtnReplay().setVisibility(android.view.View.VISIBLE);
-                gameActivity.getBtnReplay().setEnabled(true);
-            });
         }).start();
     }
 }

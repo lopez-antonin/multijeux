@@ -38,11 +38,11 @@ public class CurveTrackingActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_curve_tracking);
 
-        ImageButton btnBack = findViewById(R.id.btnBack  );
-        Button btnLevel1    = findViewById(R.id.btnLevel1);
-        Button btnLevel2    = findViewById(R.id.btnLevel2);
-        Button btnLevel3    = findViewById(R.id.btnLevel3);
-        Button btnLevel4    = findViewById(R.id.btnLevel4);
+        ImageButton btnBack   = findViewById(R.id.btnBack  );
+        Button      btnLevel1 = findViewById(R.id.btnLevel1);
+        Button      btnLevel2 = findViewById(R.id.btnLevel2);
+        Button      btnLevel3 = findViewById(R.id.btnLevel3);
+        Button      btnLevel4 = findViewById(R.id.btnLevel4);
 
         btnBack.setOnClickListener(view ->
         {

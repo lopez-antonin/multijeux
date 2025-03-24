@@ -124,11 +124,6 @@ public class CurveTrackingGame extends Activity
         return gameView;
     }
 
-    public ImageButton getBtnReplay()
-    {
-        return findViewById(R.id.btnReplay);
-    }
-
 
 
 
