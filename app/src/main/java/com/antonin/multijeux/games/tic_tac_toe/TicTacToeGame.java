@@ -1,6 +1,86 @@
 package com.antonin.multijeux.games.tic_tac_toe;
 
-public class TicTacToeGame
-{
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
+import com.antonin.multijeux.R;
+import com.antonin.multijeux.activities.MainActivity;
+import com.antonin.multijeux.activities.TicTacToeActivity;
+
+
+public class TicTacToeGame extends Activity
+{
+    private TicTacToeView ticTacToeView;
+    private TicTacToeLogic ticTacToeLogic;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.game_tic_tac_toe);
+
+        this.ticTacToeLogic = new TicTacToeLogic(3, this, this);
+
+        this.ticTacToeView = new TicTacToeView(this, 3, this, findViewById(R.id.textGagner));
+
+        ImageButton btnBack = findViewById(R.id.btnBack);
+
+        FrameLayout frameLayout = findViewById(R.id.gameContainerTicTacToe);
+        frameLayout.addView(this.ticTacToeView);
+
+        TextView txtLevel = findViewById(R.id.textLevel);
+
+        switch(getIntent().getIntExtra("LEVEL", 0))
+        {
+            case 0 : txtLevel.setText("Level : JcJ");       this.ticTacToeLogic.setLevel(0); break;
+            case 1 : txtLevel.setText("Level : Facile");    this.ticTacToeLogic.setLevel(1); break;
+            case 2 : txtLevel.setText("Level : Moyen");     this.ticTacToeLogic.setLevel(2); break;
+            case 3 : txtLevel.setText("Level : Impossible");this.ticTacToeLogic.setLevel(3); break;
+        }
+
+
+        ticTacToeView.setOnCellClickListener((row, col) -> {
+            ticTacToeView.updateGrid(row, col);
+        });
+
+        btnBack.setOnClickListener(view -> {
+            Intent intent = new Intent(TicTacToeGame.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        });
+    }
+
+    public char[][] getMap()
+    {
+        return this.ticTacToeLogic.getMap();
+    }
+
+    public void setMap(int lig, int col)
+    {
+        this.ticTacToeLogic.setMap(lig, col);
+    }
+
+    public char getJoueur()
+    {
+        return this.ticTacToeLogic.getJoueur();
+    }
+
+    public boolean isWin()
+    {
+        return this.ticTacToeLogic.isWin();
+    }
+
+    public boolean isGameBlocked()
+    {
+        return this.ticTacToeLogic.isGameBlocked();
+    }
+
+    public void updateFrame()
+    {
+        this.ticTacToeView.updateFrame();
+    }
 }

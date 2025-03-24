@@ -5,6 +5,7 @@
     <string name="curve_tracking">Suivi de Courbe</string>
 
     <!-- Tic-Tac-Toe -->
+    <string name="PVP">PVP</string>
     <string name="easy">Facile</string>
     <string name="medium">Moyen</string>
     <string name="impossible">Impossible</string>

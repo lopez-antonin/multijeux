@@ -35,6 +35,16 @@
             android:gravity="center" />
 
         <Button
+            android:id="@+id/btnPVP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/cinereous"
+            android:text="@string/PVP"
+            android:textColor="@color/antique_white"
+            android:textSize="24sp" />
+
+        <Button
             android:id="@+id/btnEasy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
