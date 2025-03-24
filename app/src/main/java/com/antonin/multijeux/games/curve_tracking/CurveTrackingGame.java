@@ -62,6 +62,15 @@ public class CurveTrackingGame extends Activity
             finish();
         });
 
+        ImageButton btnReplay = findViewById(R.id.btnReplay);
+        btnReplay.setOnClickListener(view ->
+        {
+            Intent intent = new Intent(CurveTrackingGame.this, CurveTrackingGame.class);
+            intent.putExtra("LEVEL", getLevel());
+            startActivity(intent);
+            finish();
+        });
+
         TextView textLevel = findViewById(R.id.textLevel);
         textLevel.setText(getString(R.string.level) + " " + getLevel());
 
@@ -113,6 +122,11 @@ public class CurveTrackingGame extends Activity
     public CurveTrackingView getGameView()
     {
         return gameView;
+    }
+
+    public ImageButton getBtnReplay()
+    {
+        return findViewById(R.id.btnReplay);
     }
 
 

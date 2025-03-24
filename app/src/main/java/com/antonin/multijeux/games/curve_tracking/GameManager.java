@@ -79,7 +79,10 @@ public class GameManager
     {
         if (gameOver) return true;
 
-        int radius = Math.min(gameView.getWidth(), gameView.getHeight()) / 2;
+        int    w       = gameView.getWidth ()       ;
+        int    h       = gameView.getHeight()       ;
+        double radius  = (Math.min(w, h) / 3) / 1.5 ;
+
         double circumference = 2 * Math.PI * radius;
 
         if (gameView.getDistanceTraveled() < circumference)
@@ -134,16 +137,26 @@ public class GameManager
     {
         gameOver = true;
         gameActivity.getGameView().stopDrawing();
-        startBlinkingEffect();
+        startEndGameAnimation();
     }
 
 
 
     /**
-     * Démarre un effet de clignotement pour le chemin du joueur lorsque la partie est terminée.
-     * Cette méthode fait clignoter le tracé pendant 3 secondes.
+     * Démarre la séquence d'animation de fin de partie.
+     *
+     * Cette méthode lance une animation de clignotement pour le chemin du joueur sur le plateau de jeu,
+     * signalant la fin de la partie. Le chemin clignotera en s'affichant et en disparaissant pendant une durée de 3 secondes.
+     * Une fois l'animation de clignotement terminée, le bouton "Rejouer" devient visible et activé,
+     * permettant à l'utilisateur de démarrer une nouvelle partie.
+     *
+     * L'animation est exécutée dans un thread séparé pour éviter de bloquer le thread principal de l'interface utilisateur.
+     * L'effet de clignotement est obtenu en basculant de manière répétée la visibilité du chemin du joueur
+     * avec un intervalle défini.
+     *
+     * Le bouton "Rejouer" est affiché et activé uniquement une fois l'animation de clignotement terminée.
      */
-    private void startBlinkingEffect()
+    private void startEndGameAnimation()
     {
         new Thread(() ->
         {
@@ -159,7 +172,11 @@ public class GameManager
                 }
                 catch (InterruptedException ignored) {}
             }
-        }).start();
 
+            gameActivity.runOnUiThread(() -> {
+                gameActivity.getBtnReplay().setVisibility(android.view.View.VISIBLE);
+                gameActivity.getBtnReplay().setEnabled(true);
+            });
+        }).start();
     }
 }
