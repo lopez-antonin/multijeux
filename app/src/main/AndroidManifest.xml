@@ -40,6 +40,10 @@
 
         <activity
             android:screenOrientation="portrait"
+            android:name=".games.game_of_life.GameOfLifeGame" />
+
+        <activity
+            android:screenOrientation="portrait"
             android:name=".activities.CurveTrackingActivity" />
     </application>
 </manifest>
