@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:padding="16dp"
+    android:background="@color/antique_white">
 
     <FrameLayout
         android:id="@+id/gameContainerTicTacToe"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent" />
 
     <ImageButton
         android:id="@+id/btnBack"
@@ -18,8 +19,12 @@
         android:background="?android:attr/selectableItemBackground"
         android:layout_gravity="start|top"
         android:scaleType="fitCenter"
-        app:tint="#AB9B96"
+        app:tint="@color/amaranth_purple"
         android:layout_marginTop="16dp" />
+
+
+
+
 
     <TextView
         android:id="@+id/textLevel"
@@ -28,12 +33,12 @@
         android:layout_marginTop="24dp"
         android:layout_gravity="center_horizontal"
         android:text="Level : "
-        android:textColor="#AB9B96"
+        android:textColor="@color/amaranth_purple"
         android:textSize="32sp"
         android:textStyle="bold"
         android:gravity="center"
-        android:elevation="10dp"/>
-
+        android:elevation="10dp"
+        android:layout_marginBottom="16dp"/>
 
     <TextView
         android:id="@+id/textGagner"
@@ -41,13 +46,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text=""
-        android:textColor="#AB9B96"
-        android:textSize="48sp"
+        android:textColor="@color/amaranth_purple"
+        android:textSize="32sp"
         android:textStyle="bold"
         android:gravity="center"
-        android:layout_marginTop="600dp"
-        android:elevation="10dp" />
-
+        android:elevation="10dp"
+        android:layout_marginTop="80dp" />
 
 
 </FrameLayout>

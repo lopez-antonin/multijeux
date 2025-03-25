@@ -16,8 +16,20 @@ import com.antonin.multijeux.activities.TicTacToeActivity;
 
 public class TicTacToeGame extends Activity
 {
-    private TicTacToeView ticTacToeView;
+    // +-----------+
+    // | ATTRIBUTS |
+    // +-----------+
+
+    private TicTacToeView  ticTacToeView ;
+
     private TicTacToeLogic ticTacToeLogic;
+
+
+
+
+    // +--------------------------+
+    // | MÉTHODES DU CYCLE DE VIE |
+    // +--------------------------+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -36,7 +48,6 @@ public class TicTacToeGame extends Activity
 
         TextView txtLevel = findViewById(R.id.textLevel);
 
-
         switch(getIntent().getIntExtra("LEVEL", 0))
         {
             case 0 : txtLevel.setText("Level : JcJ");       this.ticTacToeLogic.setLevel(0); break;
@@ -45,51 +56,47 @@ public class TicTacToeGame extends Activity
             case 3 : txtLevel.setText("Level : Impossible");this.ticTacToeLogic.setLevel(3); break;
         }
 
-
-        //Events
         ticTacToeView.setOnCellClickListener((row, col) ->
         {
-            if(!this.ticTacToeLogic.isAIPlaying())
+            if (!this.ticTacToeLogic.isAIPlaying())
+            {
                 ticTacToeView.updateGrid(row, col);
-            else{
+            }
+            else
+            {
                 Toast.makeText(this, "L'IA est en train de réfléchir, patientez... ", Toast.LENGTH_LONG);
             }
         });
 
-        btnBack.setOnClickListener(view -> {
-            Intent intent = new Intent(TicTacToeGame.this, MainActivity.class);
+        btnBack.setOnClickListener(view ->
+        {
+            Intent intent = new Intent(TicTacToeGame.this, TicTacToeActivity.class);
             startActivity(intent);
             finish();
         });
     }
 
-    public char[][] getMap()
-    {
-        return this.ticTacToeLogic.getMap();
-    }
 
-    public void setMap(int lig, int col)
-    {
-        this.ticTacToeLogic.setMap(lig, col);
-    }
+    // +-------------------+
+    // | GETTERS / SETTERS |
+    // +-------------------+
 
-    public char getJoueur()
-    {
-        return this.ticTacToeLogic.getJoueur();
-    }
+    public char[][] getMap() { return this.ticTacToeLogic.getMap(); }
 
-    public boolean isWin()
-    {
-        return this.ticTacToeLogic.isWin();
-    }
+    public char getJoueur() { return this.ticTacToeLogic.getJoueur(); }
 
-    public boolean isGameBlocked()
-    {
-        return this.ticTacToeLogic.isGameBlocked();
-    }
+    public boolean isWin() { return this.ticTacToeLogic.isWin(); }
 
-    public void updateFrame()
-    {
-        this.ticTacToeView.updateFrame();
-    }
+    public boolean isGameBlocked() { return this.ticTacToeLogic.isGameBlocked(); }
+
+    public void setMap(int lig, int col) { this.ticTacToeLogic.setMap(lig, col); }
+
+
+
+
+    // +--------------------+
+    // | MÉTHODES PUBLIQUES |
+    // +--------------------+
+
+    public void updateFrame() { this.ticTacToeView.updateFrame(); }
 }

@@ -1,28 +1,34 @@
 package com.antonin.multijeux.games.tic_tac_toe;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.TextView;
-
-import com.antonin.multijeux.R;
 
 public class TicTacToeView extends View
 {
-    private Paint paint;
-    private int cellSize;
-    private int nbCell;
-    private TicTacToeGame game;
-    private OnCellClickListener listener;
-    private TextView txtWin;
-    private int offsetX;
-    private int offsetY;
+    // +-----------+
+    // | ATTRIBUTS |
+    // +-----------+
 
+    private int                 cellSize;
+    private int                 nbCell  ;
+    private int                 offsetX ;
+    private int                 offsetY ;
+    private Paint               paint   ;
+    private TicTacToeGame       game    ;
+    private OnCellClickListener listener;
+    private TextView            txtWin  ;
+
+
+
+
+    // +--------------+
+    // | CONSTRUCTEUR |
+    // +--------------+
 
     public TicTacToeView(Context context, int nbCell, TicTacToeGame game, TextView txtWin)
     {
@@ -40,6 +46,12 @@ public class TicTacToeView extends View
     }
 
 
+
+
+    // +--------------------------+
+    // | MÉTHODES DU CYCLE DE VIE |
+    // +--------------------------+
+
     @Override
     protected void onDraw(Canvas canvas)
     {
@@ -48,27 +60,23 @@ public class TicTacToeView extends View
         int width = getWidth();
         int height = getHeight();
 
-        // Taille des cases
-        cellSize = Math.min(width, height) / (this.nbCell + 1); // +1 pour éviter que ça touche les bords
+        cellSize = Math.min(width, height) / (this.nbCell + 1);
 
-        // Calcul du décalage pour centrer la grille
         int gridSize = cellSize * this.nbCell;
         this.offsetX = (width - gridSize) / 2;
         this.offsetY = (height - gridSize) / 2;
 
-        paint.setColor(Color.BLACK);
+        canvas.drawColor(0xFFF0E7D8);
+
+        paint.setColor(0xFFA63A50);
         paint.setStrokeWidth(10);
 
-        // Dessiner la grille centrée
         for (int i = 1; i < this.nbCell; i++)
         {
-            // Lignes verticales
             canvas.drawLine(this.offsetX + i * cellSize, this.offsetY, this.offsetX + i * cellSize, this.offsetY + gridSize, paint);
-            // Lignes horizontales
             canvas.drawLine(this.offsetX, this.offsetY + i * cellSize, this.offsetX + gridSize, this.offsetY + i * cellSize, paint);
         }
 
-        // Dessiner les X et O en fonction du jeu
         for (int row = 0; row < this.nbCell; row++)
         {
             for (int col = 0; col < this.nbCell; col++)
@@ -83,54 +91,34 @@ public class TicTacToeView extends View
             }
         }
 
-        // Mise à jour du texte d'état de la partie
         if (!this.game.isWin() && !this.game.isGameBlocked())
         {
             this.txtWin.setText("Tour : " + this.game.getJoueur());
-        } else if (this.game.isWin())
+        }
+        else if (this.game.isWin())
         {
             this.txtWin.setText("Gagnant : " + this.game.getJoueur());
-        } else
+        }
+        else
         {
             this.txtWin.setText("Partie bloquée ! Match nul");
         }
     }
 
-    // Dessiner un X centré dans sa case
-    private void drawX(Canvas canvas, int col, int row)
-    {
-        paint.setColor(Color.RED);
-        float startX = this.offsetX + col * cellSize;
-        float startY = this.offsetY + row * cellSize;
 
-        float spacing = (float) (cellSize * 0.1);
-
-        canvas.drawLine(startX + spacing, startY + spacing, startX + cellSize - spacing, startY + cellSize - spacing, paint);
-        canvas.drawLine(startX + spacing, startY + cellSize - spacing, startX + cellSize - spacing, startY + spacing, paint);
-    }
-
-    // Dessiner un O centré dans sa case
-    private void drawO(Canvas canvas, int col, int row) {
-        paint.setColor(Color.BLUE);
-        float centerX = this.offsetX + col * cellSize + cellSize / 2;
-        float centerY = this.offsetY + row * cellSize + cellSize / 2;
-        canvas.drawCircle(centerX, centerY, (float) (cellSize / 2.5), paint);
-    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
         if (event.getAction() == MotionEvent.ACTION_DOWN)
         {
-            // Calculer la position relative à la grille
             int col = (int) ((event.getX() - this.offsetX) / this.cellSize);
             int row = (int) ((event.getY() - this.offsetY) / this.cellSize);
 
-            // Vérifier que le clic est bien dans la grille
             if (col >= 0 && col < this.nbCell && row >= 0 && row < this.nbCell)
             {
                 if (this.game.getMap()[row][col] == '\u0000')
-                { // Vérifier si la case est vide
+                {
                     if (this.listener != null)
                     {
                         this.listener.onCellClick(row, col);
@@ -141,24 +129,58 @@ public class TicTacToeView extends View
         return true;
     }
 
+
+
+
+    // +--------------------+
+    // | MÉTHODES PUBLIQUES |
+    // +--------------------+
+
+    private void drawX(Canvas canvas, int col, int row)
+    {
+        paint.setColor(0xFFAB9B96);
+        float startX = this.offsetX + col * cellSize;
+        float startY = this.offsetY + row * cellSize;
+
+        float spacing = (float) (cellSize * 0.1);
+
+        canvas.drawLine(startX + spacing, startY + spacing, startX + cellSize - spacing, startY + cellSize - spacing, paint);
+        canvas.drawLine(startX + spacing, startY + cellSize - spacing, startX + cellSize - spacing, startY + spacing, paint);
+    }
+
+
+
+    private void drawO(Canvas canvas, int col, int row)
+    {
+        paint.setColor(0xFFAB9B96);
+        float centerX = this.offsetX + col * cellSize + cellSize / 2;
+        float centerY = this.offsetY + row * cellSize + cellSize / 2;
+        canvas.drawCircle(centerX, centerY, (float) (cellSize / 2.5), paint);
+    }
+
+
+
     public void setOnCellClickListener(OnCellClickListener listener)
     {
         this.listener = listener;
     }
 
-    public interface OnCellClickListener
+
+
+    public interface OnCellClickListener { void onCellClick(int row, int col); }
+
+
+
+    public void updateFrame()
     {
-        void onCellClick(int row, int col);
+        invalidate();
     }
+
+
 
     public void updateGrid(int row, int col)
     {
         this.game.setMap(row,col);
-        invalidate();
-    }
-
-    public void updateFrame()
-    {
         invalidate();
     }
 }

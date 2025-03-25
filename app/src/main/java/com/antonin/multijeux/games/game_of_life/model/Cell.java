@@ -32,20 +32,13 @@ public class Cell
 
 
 
-    // +---------+
-    // | GETTERS |
-    // +---------+
+    // +-------------------+
+    // | GETTERS / SETTERS |
+    // +-------------------+
 
     public boolean isAlive() { return this.state; }
 
     public Set<Cell> getNeighbours() { return neighbours; }
-
-
-
-
-    // +---------+
-    // | SETTERS |
-    // +---------+
 
     public void setAlive(boolean state) { this.state = state; }
 

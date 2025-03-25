@@ -6,14 +6,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-/**
- * SensorHelper est une classe utilitaire qui gère l'utilisation de l'accéléromètre.
- *
- * - Écoute les mouvements du capteur et transmet les valeurs de déplacement.
- * - Peut être utilisée dans différents jeux nécessitant un contrôle par mouvement.
- *
- * Cette classe est actuellement uniquement utilisée dans CurveTrackingGame.
- */
 public class SensorHelper implements SensorEventListener
 {
     // +------------------+
@@ -33,10 +25,6 @@ public class SensorHelper implements SensorEventListener
     // | INTERFACE INTERNE |
     // +-------------------+
 
-    /**
-     * Interface pour écouter les mouvements détectés par l'accéléromètre.
-     * Doit être implémentée par la classe utilisant SensorHelper.
-     */
     public interface MovementListener
     {
         void onMovement(float dx, float dy);
@@ -63,9 +51,6 @@ public class SensorHelper implements SensorEventListener
     // | MÉTHODES PUBLIQUES |
     // +--------------------+
 
-    /**
-     * Enregistre l'écouteur du capteur d'accéléromètre.
-     */
     public void register()
     {
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
@@ -73,9 +58,6 @@ public class SensorHelper implements SensorEventListener
 
 
 
-    /**
-     * Désenregistre l'écouteur du capteur pour économiser la batterie.
-     */
     public void unregister()
     {
         sensorManager.unregisterListener(this);
@@ -97,8 +79,5 @@ public class SensorHelper implements SensorEventListener
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy)
-    {
-
-    }
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 }

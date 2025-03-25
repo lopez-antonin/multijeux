@@ -1,39 +1,78 @@
 package com.antonin.multijeux.games.tic_tac_toe;
 
-public class TicTacToeAI {
-    private int size;
-    private int alignToWin;
-    private char bot = 'X';
-    private char player = 'O';
-    private TicTacToeLogic logic;
+public class TicTacToeAI
+{
+    // +-----------+
+    // | ATTRIBUTS |
+    // +-----------+
 
-    private boolean playing;
+    private              int            size            ;
+    private              int            alignToWin      ;
+    private static final int            MAX_DEPTH  = 4  ;
 
-    // Paramètre pour limiter la profondeur du minimax
-    private static final int MAX_DEPTH = 4; // Limite de profondeur de recherche
+    private              char           bot        = 'X';
+    private              char           player     = 'O';
 
-    public TicTacToeAI(TicTacToeLogic logic) {
-        this.logic = logic;
-        this.size = logic.getMap().length;
+    private              TicTacToeLogic logic           ;
+
+    private              boolean        playing         ;
+
+
+
+
+    // +--------------+
+    // | CONSTRUCTEUR |
+    // +--------------+
+
+    public TicTacToeAI(TicTacToeLogic logic)
+    {
+        this.logic      = logic                 ;
+        this.size       = logic.getMap().length ;
         this.alignToWin = (size == 3) ? 3 : size;
     }
+
+
+
+
+    // +---------+
+    // | GETTERS |
+    // +---------+
+
+    public boolean isPlaying() { return this.playing; }
+
+
+
+
+    // +------------------+
+    // | MÉTHODES PRIVÉES |
+    // +------------------+
 
     private boolean hasWon(char joueur) {
         return logic.aGagner() == joueur;
     }
 
-    private int evaluate() {
-        if (hasWon(bot)) return 1000;
-        if (hasWon(player)) return -1000;
+
+
+    private int evaluate()
+    {
+        if (hasWon(bot))    { return  1000; }
+        if (hasWon(player)) { return -1000; }
         return 0;
     }
 
-    private int[] findBlockingMove() {
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (logic.getMap()[i][j] == '\u0000') {
+
+
+    private int[] findBlockingMove()
+    {
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                if (logic.getMap()[i][j] == '\u0000')
+                {
                     logic.getMap()[i][j] = player;
-                    if (hasWon(player)) {
+                    if (hasWon(player))
+                    {
                         logic.getMap()[i][j] = '\u0000';
                         return new int[] {i, j};
                     }
@@ -44,12 +83,19 @@ public class TicTacToeAI {
         return null;
     }
 
-    private int[] findWinningMove() {
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (logic.getMap()[i][j] == '\u0000') {
+
+
+    private int[] findWinningMove()
+    {
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                if (logic.getMap()[i][j] == '\u0000')
+                {
                     logic.getMap()[i][j] = bot;
-                    if (hasWon(bot)) {
+                    if (hasWon(bot))
+                    {
                         logic.getMap()[i][j] = '\u0000';
                         return new int[] {i, j};
                     }
@@ -60,38 +106,51 @@ public class TicTacToeAI {
         return null;
     }
 
-    private int minimax(int depth, boolean isMaximizing, int alpha, int beta) {
+
+
+    private int minimax(int depth, boolean isMaximizing, int alpha, int beta)
+    {
         int score = evaluate();
-        if (score == 1000 || score == -1000 || depth >= MAX_DEPTH || logic.isGameBlocked()) {
+        if (score == 1000 || score == -1000 || depth >= MAX_DEPTH || logic.isGameBlocked())
+        {
             return score - depth;
         }
 
-        if (isMaximizing) {
+        if (isMaximizing)
+        {
             int bestScore = Integer.MIN_VALUE;
-            for (int i = 0; i < size; i++) {
-                for (int j = 0; j < size; j++) {
-                    if (logic.getMap()[i][j] == '\u0000') {
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    if (logic.getMap()[i][j] == '\u0000')
+                    {
                         logic.getMap()[i][j] = bot;
                         int currentScore = minimax(depth + 1, false, alpha, beta);
                         logic.getMap()[i][j] = '\u0000';
                         bestScore = Math.max(bestScore, currentScore);
                         alpha = Math.max(alpha, bestScore);
-                        if (beta <= alpha) break;
+                        if (beta <= alpha) { break; }
                     }
                 }
             }
             return bestScore;
-        } else {
+        }
+        else
+        {
             int bestScore = Integer.MAX_VALUE;
-            for (int i = 0; i < size; i++) {
-                for (int j = 0; j < size; j++) {
-                    if (logic.getMap()[i][j] == '\u0000') {
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    if (logic.getMap()[i][j] == '\u0000')
+                    {
                         logic.getMap()[i][j] = player;
                         int currentScore = minimax(depth + 1, true, alpha, beta);
                         logic.getMap()[i][j] = '\u0000';
                         bestScore = Math.min(bestScore, currentScore);
                         beta = Math.min(beta, bestScore);
-                        if (beta <= alpha) break;
+                        if (beta <= alpha) { break; }
                     }
                 }
             }
@@ -99,7 +158,15 @@ public class TicTacToeAI {
         }
     }
 
-    public int[] findBestMove() {
+
+
+
+    // +--------------------+
+    // | MÉTHODES PUBLIQUES |
+    // +--------------------+
+
+    public int[] findBestMove()
+    {
         int[] blockMove = findBlockingMove();
         if (blockMove != null) return blockMove;
 
@@ -109,14 +176,18 @@ public class TicTacToeAI {
         int bestScore = Integer.MIN_VALUE;
         int[] bestMove = {-1, -1};
 
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (logic.getMap()[i][j] == '\u0000') {
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                if (logic.getMap()[i][j] == '\u0000')
+                {
                     logic.getMap()[i][j] = bot;
                     int score = minimax(0, false, Integer.MIN_VALUE, Integer.MAX_VALUE);
                     logic.getMap()[i][j] = '\u0000';
 
-                    if (score > bestScore) {
+                    if (score > bestScore)
+                    {
                         bestScore = score;
                         bestMove[0] = i;
                         bestMove[1] = j;
@@ -127,8 +198,11 @@ public class TicTacToeAI {
         return bestMove;
     }
 
-    public void playBotMove() {
-        if (logic.isWin() || logic.isGameBlocked()) return;
+
+
+    public void playBotMove()
+    {
+        if (logic.isWin() || logic.isGameBlocked()) { return; }
 
         this.playing = true;
 
@@ -137,7 +211,9 @@ public class TicTacToeAI {
         if (bestMove[0] != -1)
         {
             logic.setMap(bestMove[0], bestMove[1]);
-        }else {
+        }
+        else
+        {
             for(int i = 0 ; i < this.logic.getMap().length ; i++)
             {
                 for(int j = 0 ; j < this.logic.getMap().length ; j++)
@@ -151,12 +227,6 @@ public class TicTacToeAI {
                 }
             }
         }
-
         this.playing = false;
-    }
-
-    public boolean isPlaying()
-    {
-        return this.playing;
     }
 }

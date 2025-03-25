@@ -74,23 +74,33 @@
             android:textColor="@color/antique_white"
             android:textSize="24sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:text="Taille du jeu :"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:textColor="@color/cinereous"
-            />
+            android:orientation="horizontal"
+            android:gravity="center" >
 
-        <NumberPicker
-            android:id="@+id/nbCases"
-            android:layout_width="100dp"
-            android:layout_height="80dp"
-            android:textSize="30sp"
-            />
+            <TextView
+                android:id="@+id/textDensity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/size"
+                android:textSize="24sp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/cinereous"
+                android:layout_gravity="center_horizontal"/>
+
+            <EditText
+                android:id="@+id/editSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="..."
+                android:textSize="24sp"
+                android:background="@null"
+                android:inputType="numberSigned"
+                android:layout_gravity="center_horizontal" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
