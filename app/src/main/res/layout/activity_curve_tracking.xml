@@ -68,7 +68,6 @@
             android:id="@+id/btnLevel4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
             android:backgroundTint="@color/old_rose"
             android:text="@string/level4"
             android:textColor="@color/antique_white"

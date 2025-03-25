@@ -2,39 +2,40 @@ package com.antonin.multijeux.games.game_of_life;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.antonin.multijeux.games.curve_tracking.CurveTrackingGame;
 import com.antonin.multijeux.games.game_of_life.model.Cell;
 import com.antonin.multijeux.games.game_of_life.model.Grid;
+import java.util.LinkedList;
 
-public class GameOfLifeView extends SurfaceView implements Runnable {
+public class GameOfLifeView extends SurfaceView implements Runnable
+{
     private int size;
     private Grid grid;
     private Paint cellPaint;
-    private Paint gridPaint;
     private boolean isRunning;
     private Thread gameThread;
     private SurfaceHolder holder;
 
-    public GameOfLifeView(Context context, int size, double density) {
+    // Historique des grilles (10 dernières grilles)
+    private LinkedList<Grid> gridHistory;
+    private static final int HISTORY_SIZE = 3;
+
+    public GameOfLifeView(Context context, int size, double density)
+    {
         super(context);
         this.size = size;
         this.grid = new Grid(size, size, density);
         this.holder = getHolder(); // Récupère le SurfaceHolder pour gérer le dessin
 
-        // Initialisation des pinceaux
-        cellPaint = new Paint();
-        cellPaint.setColor(Color.BLACK);
-        cellPaint.setStyle(Paint.Style.FILL);
+        // Initialisation de l'historique des grilles
+        this.gridHistory = new LinkedList<>();
 
-        gridPaint = new Paint();
-        gridPaint.setColor(Color.GRAY);
-        gridPaint.setStyle(Paint.Style.STROKE);
-        gridPaint.setStrokeWidth(2);
+        cellPaint = new Paint();
+        cellPaint.setColor(0xFFA1674A);
+        cellPaint.setStyle(Paint.Style.FILL);
     }
 
     @Override
@@ -52,63 +53,103 @@ public class GameOfLifeView extends SurfaceView implements Runnable {
                 holder.unlockCanvasAndPost(canvas);
             }
 
-            // Vérification des conditions de fin
-            if (getContext() instanceof GameOfLifeGame) {
-                GameOfLifeGame gameActivity = (GameOfLifeGame) getContext();
-//                if (gameActivity.getGameManager().isGameCompleted(this)) {
-//                    isRunning = false;
-//                    break;
-//                }
+            // Mise à jour de la grille
+            updateGridHistory();  // Ajout de la grille actuelle à l'historique
+            grid.updateGrid();
+
+            GameOfLifeGame gameActivity = (GameOfLifeGame) getContext();
+            gameActivity.getGameManager().updateIterations();
+
+            if (getContext() instanceof GameOfLifeGame)
+            {
+                if (gameActivity.getGameManager().isGameCompleted(this))
+                {
+                    break;
+                }
             }
 
             try {
-                Thread.sleep(500); // Rafraîchissement à 2 FPS
+                Thread.sleep(16); // Rafraîchissement à 5 FPS
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
-            postInvalidate(); // Redessine la vue
         }
     }
 
-    private void drawGame(Canvas canvas) {
-        int w = getWidth();
-        int h = getHeight();
-        int cellSize = Math.min(w, h) / size;
-
-        // Dessiner les cellules vivantes
-        Cell[][] cells = grid.getCells();
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (cells[i][j].isAlive()) {
-                    canvas.drawRect(
-                            j * cellSize, i * cellSize,
-                            (j + 1) * cellSize, (i + 1) * cellSize,
-                            cellPaint
-                    );
-                }
-            }
-        }
-
-        // Dessiner la grille
-        for (int i = 0; i <= size; i++) {
-            canvas.drawLine(i * cellSize, 0, i * cellSize, h, gridPaint);
-            canvas.drawLine(0, i * cellSize, w, i * cellSize, gridPaint);
-        }
-    }
-
-    public void startGame() {
+    @Override
+    protected void onAttachedToWindow()
+    {
+        super.onAttachedToWindow();
         isRunning = true;
         gameThread = new Thread(this);
         gameThread.start();
     }
 
-    public void stopGame() {
+    @Override
+    protected void onDetachedFromWindow()
+    {
+        super.onDetachedFromWindow();
         isRunning = false;
-        try {
+        try
+        {
             gameThread.join();
-        } catch (InterruptedException e) {
+        }
+        catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
+    }
+
+    public void stopDrawing()
+    {
+        isRunning = false;
+    }
+
+    private void drawGame(Canvas canvas)
+    {
+        int w = getWidth();
+        int h = getHeight();
+        int cellSize = Math.min(w, h) / size;
+
+        // Calcul des décalages pour centrer la grille
+        int gridWidth = cellSize * size;
+        int gridHeight = cellSize * size;
+        int offsetX = (w - gridWidth) / 2;
+        int offsetY = (h - gridHeight) / 2;
+
+        canvas.drawColor(0xFFF0E7D8);
+
+        // Cellules vivantes
+        Cell[][] cells = grid.getCells();
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                if (cells[i][j].isAlive())
+                {
+                    canvas.drawRect(
+                            offsetX + j * cellSize, offsetY + i * cellSize,
+                            offsetX + (j + 1) * cellSize, offsetY + (i + 1) * cellSize,
+                            cellPaint
+                    );
+                }
+            }
+        }
+    }
+
+
+
+    private void updateGridHistory() {
+        if (gridHistory.size() >= HISTORY_SIZE) {
+            gridHistory.removeFirst();
+        }
+        gridHistory.add(grid.clone()); // Ajouter une copie de la grille
+    }
+
+
+
+
+    public LinkedList<Grid> getGridHistory() {
+        return gridHistory;
     }
 }

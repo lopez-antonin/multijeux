@@ -38,12 +38,69 @@
             android:id="@+id/btnStart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="24dp"
             android:backgroundTint="@color/brown_sugar"
             android:text="@string/start"
             android:textColor="@color/antique_white"
             android:textSize="24sp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:id="@+id/textDensity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/density"
+                android:textSize="24sp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/brown_sugar"
+                android:layout_gravity="center_horizontal"/>
+
+            <EditText
+                android:id="@+id/editDensity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="..."
+                android:textSize="24sp"
+                android:background="@null"
+                android:inputType="numberDecimal"
+
+                android:layout_gravity="center_horizontal" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/textSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/size"
+                android:layout_marginEnd="8dp"
+                android:textSize="24sp"
+                android:textColor="@color/brown_sugar"
+                android:layout_gravity="center_horizontal"/>
+
+            <EditText
+                android:id="@+id/editSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="..."
+                android:inputType="numberSigned"
+                android:textSize="24sp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 </FrameLayout>

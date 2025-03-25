@@ -5,33 +5,29 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.antonin.multijeux.R;
 import com.antonin.multijeux.activities.GameOfLifeActivity;
+import com.antonin.multijeux.games.curve_tracking.CurveTrackingGame;
+import com.antonin.multijeux.games.curve_tracking.CurveTrackingView;
 
-public class GameOfLifeGame extends Activity
-{
+public class GameOfLifeGame extends Activity {
     // +------------------+
     // | ATTRIBUTS PRIVÉS |
     // +------------------+
 
-    private GameOfLifeView    gameView   ;
+    private GameOfLifeView gameView;
 
-    private GameManager       gameManager;
-
-
+    private GameManager gameManager;
 
 
     // +--------------------------+
     // | MÉTHODES DU CYCLE DE VIE |
     // +--------------------------+
 
-    /**
-     * L'activité principale pour le jeu de suivi de courbe.
-     */
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_game_of_life);
 
@@ -44,6 +40,18 @@ public class GameOfLifeGame extends Activity
         btnBack.setOnClickListener(view ->
         {
             Intent intent = new Intent(GameOfLifeGame.this, GameOfLifeActivity.class);
+            intent.putExtra("SIZE", getSize());
+            intent.putExtra("DENSITY", getDensity());
+            startActivity(intent);
+            finish();
+        });
+
+        ImageButton btnReplay = findViewById(R.id.btnReplay);
+        btnReplay.setOnClickListener(view ->
+        {
+            Intent intent = new Intent(GameOfLifeGame.this, GameOfLifeGame.class);
+            intent.putExtra("SIZE", getSize());
+            intent.putExtra("DENSITY", getDensity());
             startActivity(intent);
             finish();
         });
@@ -52,21 +60,36 @@ public class GameOfLifeGame extends Activity
     }
 
 
-
-
     // +---------+
     // | GETTERS |
     // +---------+
 
-    public GameManager getGameManager() { return gameManager; }
-
-    public int getSize() { return getIntent().getIntExtra("SIZE", 20); }
-
-    public double getDensity() { return getIntent().getDoubleExtra("DENSITY", 0.5); }
-
-    public GameOfLifeView getGameView()
-    {
-        return gameView;
+    public GameManager getGameManager() {
+        return gameManager;
     }
 
+    public int getSize() {
+        return getIntent().getIntExtra("SIZE", 20);
+    }
+
+    public double getDensity() {
+        return getIntent().getDoubleExtra("DENSITY", 0.5);
+    }
+
+
+
+
+    // +--------------------+
+    // | MÉTHODES PUBLIQUES |
+    // +--------------------+
+
+    public void updateIterationsText(int iterations)
+    {
+        TextView textIterations = findViewById(R.id.textIterations);
+        textIterations.setText(String.valueOf(iterations));
+    }
+
+    public GameOfLifeView getGameView() {
+        return gameView;
+    }
 }

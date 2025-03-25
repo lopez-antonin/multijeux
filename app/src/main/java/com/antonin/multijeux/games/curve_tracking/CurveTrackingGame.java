@@ -96,7 +96,7 @@ public class CurveTrackingGame extends Activity
     protected void onResume()
     {
         super.onResume();
-        if (sensorHelper != null && !gameManager.isGameOver())
+        if (sensorHelper != null)
         {
             sensorHelper.register();
         }

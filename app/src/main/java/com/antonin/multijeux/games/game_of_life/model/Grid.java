@@ -34,23 +34,78 @@ public class Grid {
         }
     }
 
-    // Récupérer une cellule à des coordonnées précises
-    public Cell getCell(int i, int j) {
-        if (i >= 0 && i < rows && j >= 0 && j < cols) {
-            return cells[i][j];
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Grid grid = (Grid) obj;
+
+        // Comparer les cellules de manière détaillée
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (this.cells[i][j].isAlive() != grid.cells[i][j].isAlive()) {
+                    return false;
+                }
+            }
         }
-        return null;
+        return true;
     }
 
-    // Mettre à jour l'état d'une cellule
-    public void setCellState(int i, int j, boolean isAlive) {
-        if (getCell(i, j) != null) {
-            cells[i][j].setAlive(isAlive);
+
+    // Nouvelle méthode pour cloner la grille
+    public Grid clone() {
+        Grid clonedGrid = new Grid(this.rows, this.cols, 0); // Crée une nouvelle grille
+
+        // Clonage des cellules
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                clonedGrid.cells[i][j] = this.cells[i][j].clone(); // On suppose que Cell a aussi une méthode clone()
+            }
+        }
+        return clonedGrid;
+    }
+
+    public void updateGrid() {
+        boolean[][] newStates = new boolean[rows][cols]; // Tableau des nouveaux états
+
+        // Calcul des nouveaux états sans modifier immédiatement les cellules
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                int livingNeighbors = countLivingNeighbors(cells[i][j]);
+                boolean isAlive = cells[i][j].isAlive();
+
+                if (isAlive && (livingNeighbors < 2 || livingNeighbors > 3)) {
+                    newStates[i][j] = false; // Meurt
+                } else if (!isAlive && livingNeighbors == 3) {
+                    newStates[i][j] = true; // Devient vivante
+                } else {
+                    newStates[i][j] = isAlive; // Ne change pas
+                }
+            }
+        }
+
+        // Appliquer les nouveaux états aux cellules existantes
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                cells[i][j].setAlive(newStates[i][j]);
+            }
         }
     }
 
-    // Retourner la grille complète
+    // Compte les cellules vivantes autour d'une cellule donnée
+    private int countLivingNeighbors(Cell cell) {
+        int count = 0;
+        for (Cell neighbor : cell.getNeighbours()) {
+            if (neighbor.isAlive()) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    // Retourne la grille complète
     public Cell[][] getCells() {
         return cells;
     }
 }
+

@@ -40,4 +40,10 @@ public class Cell {
     // Obtenir les coordonnées
     public int getX() { return x; }
     public int getY() { return y; }
+
+    // Méthode clone pour créer une copie de la cellule
+    public Cell clone() {
+        Cell clonedCell = new Cell(this.x, this.y, this.state); // Créer une nouvelle cellule avec le même état et coordonnées
+        return clonedCell; // Ne clone pas les voisins, car ils sont gérés séparément
+    }
 }

@@ -113,18 +113,6 @@ public class GameManager
 
 
 
-    /**
-     * Vérifie si la partie est terminée.
-     *
-     * @return {@code true} si la partie est terminée, {@code false} sinon.
-     */
-    public boolean isGameOver()
-    {
-        return gameOver;
-    }
-
-
-
 
     // +------------------+
     // | MÉTHODES PRIVÉES |
