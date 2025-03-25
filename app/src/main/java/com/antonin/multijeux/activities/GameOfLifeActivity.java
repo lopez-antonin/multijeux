@@ -27,12 +27,14 @@ public class GameOfLifeActivity extends AppCompatActivity
         EditText    editSize    = findViewById(R.id.editSize   );
 
 
-        if (getIntent().hasExtra("SIZE")) {
+        if (getIntent().hasExtra("SIZE"))
+        {
             int size = getIntent().getIntExtra("SIZE", 20);
             editSize.setText(String.valueOf(size));
         }
 
-        if (getIntent().hasExtra("DENSITY")) {
+        if (getIntent().hasExtra("DENSITY"))
+        {
             double density = getIntent().getDoubleExtra("DENSITY", 0.5);
             editDensity.setText(String.valueOf(density));
         }

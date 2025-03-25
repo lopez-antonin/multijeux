@@ -12,14 +12,17 @@ import com.antonin.multijeux.activities.GameOfLifeActivity;
 import com.antonin.multijeux.games.curve_tracking.CurveTrackingGame;
 import com.antonin.multijeux.games.curve_tracking.CurveTrackingView;
 
-public class GameOfLifeGame extends Activity {
-    // +------------------+
-    // | ATTRIBUTS PRIVÉS |
-    // +------------------+
+public class GameOfLifeGame extends Activity
+{
+    // +-----------+
+    // | ATTRIBUTS |
+    // +-----------+
 
     private GameOfLifeView gameView;
 
     private GameManager gameManager;
+
+
 
 
     // +--------------------------+
@@ -27,7 +30,8 @@ public class GameOfLifeGame extends Activity {
     // +--------------------------+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_game_of_life);
 
@@ -60,6 +64,8 @@ public class GameOfLifeGame extends Activity {
     }
 
 
+
+
     // +---------+
     // | GETTERS |
     // +---------+
@@ -76,6 +82,8 @@ public class GameOfLifeGame extends Activity {
         return getIntent().getDoubleExtra("DENSITY", 0.5);
     }
 
+    public GameOfLifeView getGameView() { return gameView; }
+
 
 
 
@@ -87,9 +95,5 @@ public class GameOfLifeGame extends Activity {
     {
         TextView textIterations = findViewById(R.id.textIterations);
         textIterations.setText(String.valueOf(iterations));
-    }
-
-    public GameOfLifeView getGameView() {
-        return gameView;
     }
 }

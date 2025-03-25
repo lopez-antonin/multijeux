@@ -6,10 +6,15 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import com.antonin.multijeux.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+{
+    // +--------------------------+
+    // | MÉTHODES DU CYCLE DE VIE |
+    // +--------------------------+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -17,19 +22,22 @@ public class MainActivity extends AppCompatActivity {
         Button btnGameOfLife = findViewById(R.id.btnGameOfLife);
         Button btnCurveTracking = findViewById(R.id.btnCurveTracking);
 
-        btnTicTacToe.setOnClickListener(view -> {
+        btnTicTacToe.setOnClickListener(view ->
+        {
             Intent intent = new Intent(MainActivity.this, TicTacToeActivity.class);
             startActivity(intent);
             finish();
         });
 
-        btnGameOfLife.setOnClickListener(view -> {
+        btnGameOfLife.setOnClickListener(view ->
+        {
             Intent intent = new Intent(MainActivity.this, GameOfLifeActivity.class);
             startActivity(intent);
             finish();
         });
 
-        btnCurveTracking.setOnClickListener(view -> {
+        btnCurveTracking.setOnClickListener(view ->
+        {
             Intent intent = new Intent(MainActivity.this, CurveTrackingActivity.class);
             startActivity(intent);
             finish();

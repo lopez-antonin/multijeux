@@ -12,25 +12,38 @@ import java.util.LinkedList;
 
 public class GameOfLifeView extends SurfaceView implements Runnable
 {
-    private int size;
-    private Grid grid;
-    private Paint cellPaint;
-    private boolean isRunning;
-    private Thread gameThread;
-    private SurfaceHolder holder;
+    // +-----------+
+    // | ATTRIBUTS |
+    // +-----------+
 
-    // Historique des grilles (10 dernières grilles)
+    private int              size       ;
+
+    private Grid             grid       ;
+
+    private Paint            cellPaint  ;
+
+    private boolean          isRunning  ;
+
+    private Thread           gameThread ;
+
+    private SurfaceHolder    holder     ;
+
     private LinkedList<Grid> gridHistory;
-    private static final int HISTORY_SIZE = 3;
+
+
+
+
+    // +--------------+
+    // | CONSTRUCTEUR |
+    // +--------------+
 
     public GameOfLifeView(Context context, int size, double density)
     {
         super(context);
         this.size = size;
         this.grid = new Grid(size, size, density);
-        this.holder = getHolder(); // Récupère le SurfaceHolder pour gérer le dessin
+        this.holder = getHolder();
 
-        // Initialisation de l'historique des grilles
         this.gridHistory = new LinkedList<>();
 
         cellPaint = new Paint();
@@ -38,23 +51,34 @@ public class GameOfLifeView extends SurfaceView implements Runnable
         cellPaint.setStyle(Paint.Style.FILL);
     }
 
+
+
+
+    // +--------------------------+
+    // | MÉTHODES DU CYCLE DE VIE |
+    // +--------------------------+
+
     @Override
-    public void run() {
-        while (isRunning) {
-            if (!holder.getSurface().isValid()) {
+    public void run()
+    {
+        while (isRunning)
+        {
+            if (!holder.getSurface().isValid())
+            {
                 continue;
             }
 
             Canvas canvas = holder.lockCanvas();
-            if (canvas != null) {
-                synchronized (holder) {
+            if (canvas != null)
+            {
+                synchronized (holder)
+                {
                     drawGame(canvas);
                 }
                 holder.unlockCanvasAndPost(canvas);
             }
 
-            // Mise à jour de la grille
-            updateGridHistory();  // Ajout de la grille actuelle à l'historique
+            updateGridHistory();
             grid.updateGrid();
 
             GameOfLifeGame gameActivity = (GameOfLifeGame) getContext();
@@ -68,13 +92,18 @@ public class GameOfLifeView extends SurfaceView implements Runnable
                 }
             }
 
-            try {
-                Thread.sleep(16); // Rafraîchissement à 5 FPS
-            } catch (InterruptedException e) {
+            try
+            {
+                Thread.sleep(16); // 60 FPS
+            }
+            catch (InterruptedException e)
+            {
                 e.printStackTrace();
             }
         }
     }
+
+
 
     @Override
     protected void onAttachedToWindow()
@@ -84,6 +113,8 @@ public class GameOfLifeView extends SurfaceView implements Runnable
         gameThread = new Thread(this);
         gameThread.start();
     }
+
+
 
     @Override
     protected void onDetachedFromWindow()
@@ -100,10 +131,25 @@ public class GameOfLifeView extends SurfaceView implements Runnable
         }
     }
 
-    public void stopDrawing()
-    {
-        isRunning = false;
-    }
+
+
+
+    // +---------+
+    // | GETTERS |
+    // +---------+
+
+    public LinkedList<Grid> getGridHistory() { return gridHistory; }
+
+
+
+
+    // +--------------------+
+    // | MÉTHODES PUBLIQUES |
+    // +--------------------+
+
+    public void stopDrawing() { isRunning = false; }
+
+
 
     private void drawGame(Canvas canvas)
     {
@@ -111,7 +157,6 @@ public class GameOfLifeView extends SurfaceView implements Runnable
         int h = getHeight();
         int cellSize = Math.min(w, h) / size;
 
-        // Calcul des décalages pour centrer la grille
         int gridWidth = cellSize * size;
         int gridHeight = cellSize * size;
         int offsetX = (w - gridWidth) / 2;
@@ -119,7 +164,7 @@ public class GameOfLifeView extends SurfaceView implements Runnable
 
         canvas.drawColor(0xFFF0E7D8);
 
-        // Cellules vivantes
+        // Cellules
         Cell[][] cells = grid.getCells();
         for (int i = 0; i < size; i++)
         {
@@ -139,17 +184,12 @@ public class GameOfLifeView extends SurfaceView implements Runnable
 
 
 
-    private void updateGridHistory() {
-        if (gridHistory.size() >= HISTORY_SIZE) {
+    private void updateGridHistory()
+    {
+        if (gridHistory.size() >= 3)
+        {
             gridHistory.removeFirst();
         }
-        gridHistory.add(grid.clone()); // Ajouter une copie de la grille
-    }
-
-
-
-
-    public LinkedList<Grid> getGridHistory() {
-        return gridHistory;
+        gridHistory.add(grid.clone());
     }
 }

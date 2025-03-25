@@ -11,21 +11,11 @@ import com.antonin.multijeux.R;
 import com.antonin.multijeux.activities.CurveTrackingActivity;
 import com.antonin.multijeux.utils.SensorHelper;
 
-/**
- * CurveTrackingGame est l'activité principale du jeu de suivi de courbe.
- *
- * - Initialise la vue du jeu et l'affiche dans un conteneur.
- * - Gère la communication entre la vue et le GameManager.
- * - Utilise SensorHelper pour capter les mouvements du joueur.
- * - Met à jour l'affichage du score et gère le retour à l'écran principal.
- *
- * Cette classe orchestre le déroulement du jeu et l'interface utilisateur.
- */
 public class CurveTrackingGame extends Activity
 {
-    // +------------------+
-    // | ATTRIBUTS PRIVÉS |
-    // +------------------+
+    // +-----------+
+    // | ATTRIBUTS |
+    // +-----------+
 
     private CurveTrackingView gameView    ;
 
@@ -40,9 +30,6 @@ public class CurveTrackingGame extends Activity
     // | MÉTHODES DU CYCLE DE VIE |
     // +--------------------------+
 
-    /**
-     * L'activité principale pour le jeu de suivi de courbe.
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -131,19 +118,6 @@ public class CurveTrackingGame extends Activity
     // | MÉTHODES PUBLIQUES |
     // +--------------------+
 
-    /**
-     * Met à jour le texte affiché dans le TextView du score.
-     *
-     * Cette méthode prend une chaîne de caractères représentant le score et la définit comme
-     * contenu textuel du TextView avec l'ID 'textScore' défini dans le fichier de mise en page
-     * (R.id.textScore).
-     *
-     * @param scoreText Le nouveau texte du score à afficher. Il doit s'agir d'une chaîne de
-     *                  caractères représentant le score actuel, par exemple, "Score : 10", "0"
-     *                  ou "Meilleur score : 100".
-     * @throws NullPointerException Si le TextView avec l'ID 'textScore' est introuvable dans
-     *                              la mise en page actuelle.
-     */
     public void updateScoreText(String scoreText)
     {
         TextView textScore = findViewById(R.id.textScore);
@@ -152,19 +126,6 @@ public class CurveTrackingGame extends Activity
 
 
 
-    /**
-     * Met à jour le texte affiché dans le TextView "Meilleur Score".
-     *
-     * Cette méthode prend une chaîne de caractères représentant le meilleur score
-     * et la définit comme contenu textuel du TextView avec l'ID `textBestScore`.
-     * Cela permet une mise à jour dynamique du meilleur score affiché à l'utilisateur.
-     *
-     * @param bestScoreText La chaîne de caractères à afficher comme meilleur score.
-     *                      Cette chaîne doit généralement représenter le score le
-     *                      plus élevé atteint par l'utilisateur. Par exemple "Meilleur: 100".
-     * @throws NullPointerException Si aucun TextView avec R.id.textBestScore n'a été trouvé dans la mise en page.
-     * @throws IllegalArgumentException Si bestScoreText est null.
-     */
     public void updateBestScoreText(String bestScoreText)
     {
         TextView textBestScore = findViewById(R.id.textBestScore);
