@@ -142,10 +142,11 @@ public class TicTacToeAI {
             {
                 for(int j = 0 ; j < this.logic.getMap().length ; j++)
                 {
-                    if(this.logic.getMap()[i][j] != '\u0000')
+                    if(this.logic.getMap()[i][j] == '\u0000' && this.playing)
                     {
                         this.logic.setMap(i, j);
-                        break;
+                        this.playing = false;
+                        return;
                     }
                 }
             }
